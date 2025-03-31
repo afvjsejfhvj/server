@@ -1,21 +1,15 @@
 const http = require('http')
 const { soma } = require('./texte')
-
+const url = require('url')
 const PORT = 8000
 
 //cria o server
 
 const server = http.createServer((req,res)=>{
-   let valores = req.url.replace('/', '').replace('?', '').split('&')
-   let parametros = []
-
-   for(item in valores){
-        let chaveValor = valores[item].split('=')
-        parametros[chaveValor[0]] = Number(chaveValor[1])
-   }
-   console.log(parametros)
-    let resultado = soma(parametros.a, parametros.b)
-    
+    const urlcapturada = url.parse(req.url, true)
+    const {query} = urlcapturada
+    let resultado = soma(Number(query.a), Number(query.b))
+    console.log(urlcapturada)
     res.end(`aqui vai um resultado ${resultado}`) //soma serve para nada, so para texte mesmo
 })
 // fazer ele ouvir a porta 8000
